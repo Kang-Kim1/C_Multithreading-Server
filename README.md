@@ -1,6 +1,6 @@
 # CSE421_Multithreading_P1
 - Members : Andrew Chung, Changmin Park, Kangmin Kim
-- Let's do this!  
+- Multithreading socket server written in c language  
 
 _____________________Step_________________________
 1. Open server with ./myhttpd -p <port#>
