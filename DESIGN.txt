@@ -1,0 +1,97 @@
+_______________________________Design Document__________________________________
+
+Team Name: SoPro
+
+Team Members:
+1.) Andrew Chung
+UBID: 36329568
+Email: achung5@buffalo.edu
+
+2.) Changmin Park
+UBID: 50015911
+Email: cpark22@buffalo.edu
+
+3.) Kangmin Kim
+UBID: 50162357
+Email:kangmink@buffalo.edu
+
+___________________________________Data Structures________________________________
+
+1.) Queuing
+- An array was created and has the maximum queue size of 400. This was done so that
+the thread listener can take job requests and place them into the queue accordingly.
+
+struct queue
+{
+	struct packet items[MAX_QUEUE_SIZE]; 	
+	int size;
+};
+
+2.) Scheduling 
+- The scheduler works in conjunction with the queue. It implements a "First Come First Serve (FCFS)" and 
+"Shortest Job First" approach. For "First Come First Serve (FCFS)", the default schedule policy setting is FCFS. 
+So, we leave queue as it is. For "Shortest Job First (SJF)", it checks the size of each element of queue, and sort(Swap position with bigger size element) it by size (smaller size first). 
+In addition, it utilizes some functions such as queue_delete to pop a job from the queue that is ready to be executed.
+
+
+3.) Multithreading
+Accomplished through setting limit of thread numbers, and for loop to create threads. Each time created, subtract 1
+of thread number. After the thread is done, it is added 1. Default thread number is 4.
+
+4.) Synchronization 
+Mutex is used for ready_queue and making sure that one thread can touch the ready_queue
+at a time. A few functions that were used in this portion of the implementation were...
+- pthread_mutex_lock
+- pthread_mutex_unlock
+
+_______________________________Context Switches_______________________________
+Primarily our context switching takes place between the time the thread listener carries out its job,
+and the scheduling thread. These requests and their content are inserted into the queue.
+
+Also, part of context switching is handled through our scheduler, utilizing the shortest job first approach.
+This approach was created, because the first come first serve approach isn't ideal
+for handling jobs in a manner that would take the execution time of a job into consideration.
+Shortest job first looks to carry-out jobs based on the job with the shortest execution time.
+
+_______________________________Race Conditions _______________________________
+Utilizing mutex locking and unlocking assisted in preventing race conditions. In our scheduler function.
+thread checking was used to consistently check for any available threads(jobs) in the queue. If there weren't any jobs
+available, then these "thread checkers" were put into a wait state until a job arrived. 
+thread numbers works as semaphore in our implementation code. It limits threads.
+
+_______________________________Design Discussion_______________________________ 
+
+1.) Our thread listener is able to wait and handle requests(packets) that are submitted to the server from a client. 
+When a request is submitted, the thread gets the file information for that request. If there is an error with the incoming request,
+a message is returned back to the client in terminal However, if the request fits all criteria for acceptance,
+then all information for that request is gathered and inserted onto the queue. The scheduler then picks up the job 
+from the front of the queue, and then an execution thread handles the request.
+
+2.) Our scheduler works in conjunction with the queue to be able to access more then one thread. This is carried out using
+semphores to control the status of the data structures and functions. For instance, once our scheduler puts in a work order,
+a thread takes the job and acquires the mutex(key) to enter the queue. This effectively prevents any other thread from entering the queue
+at the same time, preventing a violation of mutual exclusion.
+
+_______________________________Advantage and Disadvantanges_______________________________
+
+1.) Advantage
+- We enforced a first come first serve and shortest job first implementation. By utilizing these
+two forms of scheduling, we were able to effectively handle jobs in a timely manner. Inefficiency would be an issue,
+had we only used one of these scheduling structures rather then both of them. 
+- Our queue structure allows for listener threads and execution threads to work almost simulatenously with one another,
+this results in a better flow of handling and executing requests.
+
+2.) Disadvantages
+- Depending on the system this code is executed on, it can result in a delayed runtime.
+- Has to be stopped using a combination of command keys.
+
+___________________________________Citations_____________________________________
+
+1.) Project 1 description
+2.) http://www.tldp.org/LDP/lpg-0.4.pdf
+3.) http://man7.org/linux/man-pages/man3/
+4.) https://www.tjhsst.edu/~dhyatt/superap/unixcmd.html
+5.) http://www.ee.surrey.ac.uk/Teaching/Unix/
+6.) https://www.youtube.com/watch?v=wrY4DIjKJ9E
+7.) https://www.youtube.com/watch?v=-DHjFEzuDjQ
+
