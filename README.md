@@ -1,4 +1,4 @@
-# CSE421_Multithreading_P1
+# CSE421_Multi-Threading_P1
 ### Members : Andrew Chung, Changmin Park, Kangmin Kim
 #### Multi-ㅆhreading socket server written in c language  
 
