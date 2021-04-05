@@ -8,5 +8,5 @@
     * choose options to add  
 2. Open client with the following cmd : 
    > ./soc -h 127.0.0.1(when local) -p <port#>  
-4. Start sending command (GET or HEAD)  
+3. Start sending command (GET or HEAD)  
 
